@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR-Код</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.0/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div id="qr">Загрузка...</div>
+    <div id="qr-image"></div>
+    <script>
+        const url = new URL(window.location.href);
+        const clientId = url.searchParams.get('clientId');
+        const getQr = async () => {
+            try {
+                const response = await fetch(`/init/${clientId}/result/`);
+                const result = await response.text();
+                return result;
+            } catch (error) {
+
+            }
+            return false;
+        }
+
+        const generateQr = async () => {
+            const qr = await getQr();
+            if (qr) {
+                const qrEl = document.querySelector('#qr');
+                const qrImageEl = document.querySelector('#qr-image');
+                qrEl.innerHTML = `<pre>${qr}</pre>`;
+            }
+            return qr;
+        }
+        const startInterval = setInterval(async () => {
+            const qr = await generateQr();
+            if (qr) clearInterval(startInterval);
+        }, 3000);
+
+        setInterval(generateQr, 30000); 
+    </script>
+</body>
+
+</html>
