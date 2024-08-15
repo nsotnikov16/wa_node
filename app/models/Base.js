@@ -25,9 +25,8 @@ class Base {
         } catch (error) {
             result = {success: false, message: error.message ?? 'Ошибка'}
         }
+        // console.log(result, this.queryString);
         this.reset();
-
-        console.log(result);
         return result;
     }
 
@@ -48,6 +47,13 @@ class Base {
 
     async delete() {
         this.queryString = `DELETE FROM ${this.table}`;
+        this.createWhereString();
+        return this.queryWithQstring();
+    }
+
+    async update(fields) {
+        const str = Object.entries(fields).map(([column, value]) => `${this.getColumn(column)} = ${this.getValue(value)}`).join(',');
+        this.queryString = `UPDATE ${this.table} SET ${str} `;
         this.createWhereString();
         return this.queryWithQstring();
     }

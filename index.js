@@ -7,10 +7,13 @@ const ClientModel = require('./app/models/Client');
 const ClientsCollection = require('./app/collections/clients');
 const { defaultClientId } = require('./app/tools/constants');
 
+
 (async () => {
     const allClients = await new ClientModel().where('on', 1).select(['waid']).get();
     if (allClients.length) allClients.forEach(item => ClientsCollection.startClient(item.waid, { sendingMessageInfo: item.waid == defaultClientId }))
 })()
+
+
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, }));

@@ -25,9 +25,6 @@ module.exports.logout = async (req, res) => {
         if (!ClientsCollection.items[clientId]) throw new Error();
         const ok = await ClientsCollection.items[clientId].logout();
         if (!ok) throw new Error();
-        const model = new ClientModel();
-        const result = await model.where('waid', clientId).delete();
-        if (!result.success) throw new Error();
         delete ClientsCollection.items[clientId];
         return res.send({ success: true });
     } catch (error) {
