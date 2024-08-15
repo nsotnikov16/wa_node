@@ -16,7 +16,7 @@
         const clientId = url.searchParams.get('clientId');
         const getQr = async () => {
             try {
-                const response = await fetch(`/init/${clientId}/result/`);
+                const response = await fetch(`/client/init/${clientId}/result/`);
                 const result = await response.text();
                 return result;
             } catch (error) {
